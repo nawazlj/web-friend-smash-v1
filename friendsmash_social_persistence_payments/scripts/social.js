@@ -12,7 +12,10 @@ function onStatusChange(response) {
   if( response.status != 'connected' ) {
     login(loginCallback);
   } else {
-    showHome();
+    getMe(function(){
+      renderWelcome();
+      showHome();
+    });
   }
 }
 function onAuthResponseChange(response) {
