@@ -1,3 +1,4 @@
+var friendCache = {};
 function login(callback) {
   FB.login(callback);
 }
@@ -16,4 +17,14 @@ function onStatusChange(response) {
 }
 function onAuthResponseChange(response) {
   console.log('onAuthResponseChange', response);
+}
+function getMe(callback) {
+  FB.api('/me', {fields: 'id,name,first_name,picture.width(120).height(120)'}, function(response){
+    if( !response.error ) {
+      friendCache.me = response;
+      callback();
+    } else {
+      console.error('/me', response);
+    }
+  });
 }
