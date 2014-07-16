@@ -1,6 +1,6 @@
 var friendCache = {};
 function login(callback) {
-  FB.login(callback);
+  FB.login(callback, {scope: 'user_friends'});
 }
 function loginCallback(response) {
   console.log('loginCallback',response);
@@ -13,8 +13,18 @@ function onStatusChange(response) {
     login(loginCallback);
   } else {
     getMe(function(){
-      renderWelcome();
-      showHome();
+      getPermissions(function(){
+        if(hasPermission('user_friends')) {
+          getFriends(function(){
+            renderWelcome();
+            onLeaderboard();
+            showHome();    
+          });
+        } else {
+          renderWelcome();
+          showHome();
+        }
+      });
     });
   }
 }
@@ -31,3 +41,35 @@ function getMe(callback) {
     }
   });
 }
+function getFriends(callback) {
+  FB.api('/me/friends', {fields: 'id,name,first_name,picture.width(120).height(120)'}, function(response){
+    if( !response.error ) {
+      friendCache.friends = response;
+      callback();
+    } else {
+      console.error('/me/friends', response);
+    }
+  });
+}
+
+function getPermissions(callback) {
+  FB.api('/me/permissions', function(response){
+    if( !response.error ) {
+      friendCache.permissions = response;
+      callback();
+    } else {
+      console.error('/me/permissions', response);
+    }
+  });
+}
+
+function hasPermission(permission) {
+  for( var i in friendCache.permissions ) {
+    if( 
+      friendCache.permissions[i].permission == permission 
+      && friendCache.permissions[i].status == 'granted' ) 
+      return true;
+  }
+  return false;
+}
+
