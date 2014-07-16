@@ -48,6 +48,18 @@ window.onload = function () {
   stage.style.height = '570px';
   
 }
+$(document).ready(function()
+{
+  FB.init({
+  appId: 445369398893938,
+  frictionlessRequests: true,
+  status: true,
+  version: 'v2.0'
+});
+
+FB.Event.subscribe('auth.authResponseChange', onAuthResponseChange);
+FB.Event.subscribe('auth.statusChange', onStatusChange);
+});
 
 function BlockMove(event) {
   // Tell Safari not to move the window.
