@@ -53,6 +53,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+  <script src="//connect.facebook.net/en_US/sdk.js"></script>
     <title>Friend Smash!</title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
