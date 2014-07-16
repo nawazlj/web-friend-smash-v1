@@ -599,3 +599,8 @@ function closePopUp(callback) {
   $('#pop_up').animate({'opacity': 0}, 'fast', function(){ $('#pop_up').remove()});
   $('#close_button').animate({'opacity': 0}, 'fast', function(){ $('#close_button').remove()} );
 }
+function renderWelcome() {
+  var welcome = $('#welcome');
+  welcome.find('.first_name').html(friendCache.me.first_name);
+  welcome.find('.profile').attr('src',friendCache.me.picture.data.url);
+}
